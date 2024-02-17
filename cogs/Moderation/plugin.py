@@ -1,9 +1,13 @@
 from __future__ import annotations
+import os
+import sys
+
+import discord
 from core import Bot
 from datetime import timedelta
 from discord import app_commands, Interaction, Member, TextChannel, User, utils as Utils
 from humanfriendly import parse_timespan, InvalidTimespan
-from typing import Optional
+from typing import Literal, Optional
 from .. import Plugin
 
 
@@ -227,6 +231,38 @@ class Moderate(Plugin):
         else:
             await self.bot.success(f"Successfully unlocked **{target}** channel.", interaction)
             
+        
+    #====================== Restart the Bot ===================
+    
+    @app_commands.command(name="restart", description="Restart the bot")
+    @app_commands.default_permissions(administrator=True)  
+    async def restart(self, interaction: Interaction):
+
+        if not interaction.user.guild_permissions.administrator:
+            await interaction.response.send_message("You do not have permissions to use this command")
+            return
+
+        embed = discord.Embed(title="Restarting...", color=discord.Color.orange())
+        await interaction.response.send_message(embed=embed)
+
+        try:
+            restart_script = "main.py"
+            print(f"Restarting with: {sys.executable}")
+            try:
+                os.execv(sys.executable, [sys.executable, restart_script])  
+            except Exception as e:
+                print(f"Restart failed: {e}")
+                embed = discord.Embed(title="Restart failed", description=str(e))
+                await interaction.followup.send(embed=embed)
+                raise e
+        except Exception as e:
+            print(f"Error closing client: {e}")
+            embed = discord.Embed(title="Restart failed", description=str(e))
+            await interaction.followup.send(embed=embed)
+            raise e
+        finally:
+            print("Bot has been restarted")
+
    
 async def setup(bot: Bot):
     await bot.add_cog(Moderate(bot))
