@@ -1,11 +1,7 @@
 from __future__ import annotations
-from datetime import datetime
 from typing import Any, Optional, Union
-from discord import colour, Embed as OriginalEmbed
-from typing_extensions import Self
-
+from discord import Embed as OriginalEmbed
 from discord.colour import Colour
-from discord.types.embed import EmbedType
 
 __all__ = ("Embed",)
 

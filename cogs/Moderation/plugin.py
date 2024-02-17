@@ -1,17 +1,11 @@
 from __future__ import annotations
-
-import logging
-from datetime import timedelta
-from typing import Optional
-
-import discord
-from discord import app_commands, Interaction, Member, TextChannel, User, utils as Utils
-
-from humanfriendly import parse_timespan, InvalidTimespan
-
-from .. import Plugin
-import config
 from core import Bot
+from datetime import timedelta
+from discord import app_commands, Interaction, Member, TextChannel, User, utils as Utils
+from humanfriendly import parse_timespan, InvalidTimespan
+from typing import Optional
+from .. import Plugin
+
 
 def can_moderate():
     async def predicate(interaction: Interaction):

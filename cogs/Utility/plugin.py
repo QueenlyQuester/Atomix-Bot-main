@@ -3,7 +3,6 @@ from core import Bot, Embed
 from .. import Plugin
 from discord import Interaction, app_commands, Member
 import discord
-from config import JOIN_CHANNEL_ID
 import config
 
 
