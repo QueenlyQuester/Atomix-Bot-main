@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Final
 
-TOKEN: Final = "MTE5OTc1NTk5MDE5MTU4NzM0OA.GF9WgJ.gg8BS-7uQEUmVmGGu7Pe2pZda9bL8SSTnVageo"
+TOKEN: Final = "your_bot_token"
 
 WARN_LOG_CHANNEL_ID: Final = "1201982961298444328"
 
