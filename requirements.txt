@@ -1,0 +1,7 @@
+discord.py
+logging
+asyncio
+typing
+sys
+humanfriendly
+datetime
