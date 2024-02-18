@@ -1,6 +1,7 @@
 from __future__ import annotations
 import os
 import sys
+from click import Context
 
 import discord
 from core import Bot
@@ -174,32 +175,27 @@ class Moderate(Plugin):
     #====================== Clear Messages ===================
  
     
-    # @app_commands.command(name="clear", description="Clear messages in a channel.")
-    # @app_commands.default_permissions(manage_messages=True)
-    # @app_commands.describe(
-    #     channel="Channel to clear messages in.",
-    #     amount="Number of messages to clear."  
-    # )
-    # async def clear_command(
-    #     self, 
-    #     interaction: Interaction,
-    #     channel: TextChannel,
-    #     amount: int
-    # ):
-    #     try:
-    #         await channel.purge(limit=amount)
-    #     except:
-    #         await self.bot.error("Unable to clear messages", interaction)
-    #     else:
-    #         await self.bot.success(f"Cleared {amount} messages", interaction)
     
-    @app_commands.command(name="clear", description="Clear messages in a channel.")
+    @app_commands.command(name="clear", description="Clears console messages")
+    async def clear(self, interaction: discord.Interaction):
+        if interaction.user.id != interaction.guild.owner_id:
+            return await interaction.response.send_message("Only the server owner can use this command.")
+
+        os.system("cls")
+        embed = discord.Embed(
+            title="Console Cleared",
+            color=discord.Color.red(),
+        )
+        embed.description = "The console has been cleared!"
+        await interaction.response.send_message(embed=embed)
+        
+    @app_commands.command(name="purge", description="Purges messages in a channel.")
     @app_commands.default_permissions(manage_messages=True)
     @app_commands.describe(
-        channel="Channel to clear messages in.",
-        amount="Number of messages to clear."
+        channel="Channel to purge messages in.",
+        amount="Number of messages to purge."
     )
-    async def clear_command(
+    async def purge_command(
         self,
         interaction: Interaction,
         channel: TextChannel,
@@ -214,9 +210,9 @@ class Moderate(Plugin):
         try:
             await channel.purge(limit=amount)
         except Exception as e:
-            await self.bot.error(f"Unable to clear messages: {e}", interaction)
+            await self.bot.error(f"Unable to purge messages: {e}", interaction)
         else:
-            await self.bot.success(f"Cleared {amount} messages in {channel}", interaction)
+            await self.bot.success(f"Purged {amount} messages in {channel}", interaction)
             
     
 
