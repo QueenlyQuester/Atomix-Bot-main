@@ -16,7 +16,10 @@ def can_moderate():
         target: Member = interaction.namespace.member or interaction.namespace.target
         if not target: 
             return True
-        assert interaction.guild is not None and isinstance(interaction.user, Member)
+        if interaction.guild is None:
+            raise ValueError("Interaction must be in a guild")
+        if not isinstance(interaction.user, Member):
+            raise ValueError("Interaction user must be a Member")
 
         if(
             target.top_role.position > interaction.user.top_role.position
@@ -170,25 +173,52 @@ class Moderate(Plugin):
             
     #====================== Clear Messages ===================
  
+    
+    # @app_commands.command(name="clear", description="Clear messages in a channel.")
+    # @app_commands.default_permissions(manage_messages=True)
+    # @app_commands.describe(
+    #     channel="Channel to clear messages in.",
+    #     amount="Number of messages to clear."  
+    # )
+    # async def clear_command(
+    #     self, 
+    #     interaction: Interaction,
+    #     channel: TextChannel,
+    #     amount: int
+    # ):
+    #     try:
+    #         await channel.purge(limit=amount)
+    #     except:
+    #         await self.bot.error("Unable to clear messages", interaction)
+    #     else:
+    #         await self.bot.success(f"Cleared {amount} messages", interaction)
+    
     @app_commands.command(name="clear", description="Clear messages in a channel.")
     @app_commands.default_permissions(manage_messages=True)
     @app_commands.describe(
         channel="Channel to clear messages in.",
-        amount="Number of messages to clear."  
+        amount="Number of messages to clear."
     )
     async def clear_command(
-        self, 
+        self,
         interaction: Interaction,
         channel: TextChannel,
         amount: int
     ):
+        if not isinstance(channel, TextChannel):
+            await self.bot.error("Invalid channel provided", interaction)
+            return
+        if amount <= 0:
+            await self.bot.error("Invalid amount. Please provide a positive integer.", interaction)
+            return
         try:
             await channel.purge(limit=amount)
-        except:
-            await self.bot.error("Unable to clear messages", interaction)
+        except Exception as e:
+            await self.bot.error(f"Unable to clear messages: {e}", interaction)
         else:
-            await self.bot.success(f"Cleared {amount} messages", interaction)
-
+            await self.bot.success(f"Cleared {amount} messages in {channel}", interaction)
+            
+    
 
             
     #====================== Lock Channel ===================

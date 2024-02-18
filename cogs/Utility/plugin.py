@@ -53,14 +53,26 @@ class Utility(Plugin):
             print(f"Error sending join message: {e}")
             
             
+    # @app_commands.command(name="roleinfo", description="Get info about a role")
+    # async def role_info_command(self, interaction: Interaction, role: discord.Role):
+    #     embed = Embed(title=f"Role Info - {role.name}")
+    #     embed.add_field(name="ID", value=role.id)
+    #     embed.add_field(name="Color", value=role.color)
+    #     embed.add_field(name="Position", value=role.position)
+    #     embed.add_field(name="Permissions", value=", ".join([perm for perm in role.permissions if perm]))
+    #     await interaction.response.send_message(embed=embed)
+    
     @app_commands.command(name="roleinfo", description="Get info about a role")
     async def role_info_command(self, interaction: Interaction, role: discord.Role):
         embed = Embed(title=f"Role Info - {role.name}")
         embed.add_field(name="ID", value=role.id)
         embed.add_field(name="Color", value=role.color)
         embed.add_field(name="Position", value=role.position)
-        embed.add_field(name="Permissions", value=", ".join([perm for perm in role.permissions if perm]))
         await interaction.response.send_message(embed=embed)
+
+
+
+
 
 
     @app_commands.command(name="channelinfo", description="Get info about a text channel")  
