@@ -1,5 +1,5 @@
 # Atomix-Bot
-This advanced Discord Bot has an amazing 30 comments, all pre-coded for you.
+This advanced Discord Bot has an amazing 30 commands, all pre-coded for you.
 The bot is easy to extend, so if you want to extend something, do it. 
 
 # Getting Started
